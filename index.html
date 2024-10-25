@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resumo AWS SAA</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <header>
+        <h1 class="title">Resumo</h1>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#nlbxalb">NLB x ALB</a></li>
+            <li><a href="#kinesis">Kinesis</a></li>
+            <li><a href="#s3">S3</a></li>
+            <li><a href="#database">Banco de Dados</a></li>
+            <li><a href="#sqsxsns">SQS x SNS</a></li>
+            <li><a href="#vpc">VPC</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <section id="nlbxalb">
+            <h1 class="title">Network Load Balancer x Application Load Balancer</h1>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Aspecto</th>
+                        <th>Network Load Balancer (NLB)</th>
+                        <th>Application Load Balancer (ALB)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Camada OSI</td>
+                        <td>Camada 4 (Transporte)</td>
+                        <td>Camada 7 (Aplicação)</td>
+                    </tr>
+                    <tr>
+                        <td>Protocolos Suportados</td>
+                        <td>TCP, UDP, TLS</td>
+                        <td>HTTP, HTTPS, WebSocket</td>
+                    </tr>
+                    <tr>
+                        <td>Roteamento Baseado em Conteúdo</td>
+                        <td>Não suportado</td>
+                        <td>Suportado (URLs, cabeçalhos, métodos HTTP)</td>
+                    </tr>
+                    <tr>
+                        <td>Desempenho (Escalabilidade)</td>
+                        <td>Alta (milhões de requisições por segundo)</td>
+                        <td>Alta, mas inferior ao NLB</td>
+                    </tr>
+                    <tr>
+                        <td>Latência</td>
+                        <td>Baixa</td>
+                        <td>Um pouco maior (processamento na camada 7)</td>
+                    </tr>
+                    <tr>
+                        <td>Manutenção de Sessão (Sticky Sessions)</td>
+                        <td>Não suportado</td>
+                        <td>Suportado (baseado em cookies)</td>
+                    </tr>
+                    <tr>
+                        <td>Descarregamento de TLS/SSL</td>
+                        <td>Suportado</td>
+                        <td>Suportado</td>
+                    </tr>
+                    <tr>
+                        <td>WebSockets</td>
+                        <td>Não recomendado</td>
+                        <td>Suportado</td>
+                    </tr>
+                    <tr>
+                        <td>IP Elástico</td>
+                        <td>Suporta IPs estáticos</td>
+                        <td>Não suporta diretamente IPs estáticos</td>
+                    </tr>
+                    <tr>
+                        <td>Registro de Logs de Acesso</td>
+                        <td>Não suporta logs detalhados</td>
+                        <td>Suporta logs detalhados de acesso</td>
+                    </tr>
+                    <tr>
+                        <td>Roteamento com Base em IP</td>
+                        <td>Suportado (balanceamento de carga no nível IP)</td>
+                        <td>Não suportado</td>
+                    </tr>
+                    <tr>
+                        <td>Caso de Uso Ideal</td>
+                        <td>Tráfego de rede de alto desempenho (TCP/UDP), baixa latência</td>
+                        <td>Aplicações web, microsserviços, APIs</td>
+                    </tr>
+                    <tr>
+                        <td>Conexões de Longo Prazo</td>
+                        <td>Melhor opção para conexões de longa duração</td>
+                        <td>Suporta conexões HTTP/HTTPS e WebSockets</td>
+                    </tr>
+                    <tr>
+                        <td>Autenticação de Usuários</td>
+                        <td>Não suportado</td>
+                        <td>Suportado (integração nativa com autenticação)</td>
+                    </tr>
+                    <tr>
+                        <td>Proteção contra Ataques de Camada 7</td>
+                        <td>Não aplicável</td>
+                        <td>Melhor proteção com WAF (Web Application Firewall)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="kinesis">
+            <h1 class="title">Kinesis</h1>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Serviço</th>
+                        <th>Descrição</th>
+                        <th>Caso de Uso Ideal</th>
+                        <th>Principais Características</th>
+                        <th>Limitações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Kinesis Data Streams</td>
+                        <td>Coleta e processamento de dados em tempo real.</td>
+                        <td>Processamento de dados de sensores, logs de aplicações, métricas em tempo real.</td>
+                        <td>Suporta leitura de dados com baixa latência, pode processar dados múltiplas vezes.</td>
+                        <td>Necessita gerenciamento de shards, configuração mais complexa.</td>
+                    </tr>
+                    <tr>
+                        <td>Kinesis Data Firehose</td>
+                        <td>Entrega de dados em tempo real para destinos como S3, Redshift, Elasticsearch e Splunk.</td>
+                        <td>Carregamento de dados de streaming em data lakes, data warehouses ou ferramentas de análise.
+                        </td>
+                        <td>Totalmente gerenciado, pode converter formatos (ex: Parquet, ORC).</td>
+                        <td>Não permite múltiplas leituras dos dados, apenas streaming contínuo.</td>
+                    </tr>
+                    <tr>
+                        <td>Kinesis Data Analytics</td>
+                        <td>Análise de dados de streaming usando SQL ou Apache Flink.</td>
+                        <td>Consultas em tempo real em streams de dados, geração de insights imediatos.</td>
+                        <td>Suporta análises baseadas em SQL e integração com Kinesis Data Streams e Firehose.</td>
+                        <td>Requer familiaridade com SQL ou Apache Flink para configurações complexas.</td>
+                    </tr>
+                    <tr>
+                        <td>Kinesis Video Streams</td>
+                        <td>Captura, processamento e armazenamento de vídeos em tempo real.</td>
+                        <td>Transmissão ao vivo, monitoramento de vídeo, IoT com vídeos.</td>
+                        <td>Suporta transmissão segura de vídeo, pode integrar com serviços de Machine Learning.</td>
+                        <td>Mais voltado para vídeo e não para dados tradicionais de streaming.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </section>
+
+        <section id="s3">
+            <h1 class="title">S3</h1>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tipo de Armazenamento</th>
+                        <th>Descrição</th>
+                        <th>Caso de Uso Ideal</th>
+                        <th>Principais Características</th>
+                        <th>Limitações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>S3 Standard</td>
+                        <td>Armazenamento para dados acessados com frequência.</td>
+                        <td>Sites, aplicações móveis, armazenamento de dados ativos.</td>
+                        <td>Alta durabilidade, baixa latência, acesso frequente.</td>
+                        <td>Custo mais elevado em comparação com outras classes.</td>
+                    </tr>
+                    <tr>
+                        <td>S3 Intelligent-Tiering</td>
+                        <td>Armazena dados com acesso desconhecido, movendo automaticamente entre camadas.</td>
+                        <td>Dados com acesso imprevisível ou variado.</td>
+                        <td>Otimização automática de custos, suporte a dados não acessados frequentemente.</td>
+                        <td>Taxas de monitoramento adicionais podem ser aplicadas.</td>
+                    </tr>
+                    <tr>
+                        <td>S3 Standard-IA (Infrequent Access)</td>
+                        <td>Para dados acessados menos frequentemente, mas que precisam estar disponíveis imediatamente.
+                        </td>
+                        <td>Backup e recuperação de desastres, dados de longo prazo.</td>
+                        <td>Menor custo de armazenamento, alta durabilidade.</td>
+                        <td>Custo adicional por acesso aos dados.</td>
+                    </tr>
+                    <tr>
+                        <td>S3 One Zone-IA</td>
+                        <td>Sem redundância em várias zonas de disponibilidade; menor custo que Standard-IA.</td>
+                        <td>Dados que podem ser reprocessados ou que não requerem alta disponibilidade.</td>
+                        <td>Custo reduzido, alta durabilidade dentro de uma única zona.</td>
+                        <td>Risco maior de perda de dados se a zona de disponibilidade falhar.</td>
+                    </tr>
+                    <tr>
+                        <td>S3 Glacier</td>
+                        <td>Armazenamento para dados que são raramente acessados, com tempos de recuperação mais longos.
+                        </td>
+                        <td>Arquivos de backup, arquivamento de longo prazo.</td>
+                        <td>Custo extremamente baixo, ideal para armazenamento a longo prazo.</td>
+                        <td>Tempo de recuperação que pode levar horas.</td>
+                    </tr>
+                    <tr>
+                        <td>S3 Glacier Deep Archive</td>
+                        <td>O nível mais baixo de custo para arquivamento a longo prazo, com recuperação ainda mais
+                            lenta.</td>
+                        <td>Dados que precisam ser armazenados por muitos anos.</td>
+                        <td>Custo mínimo de armazenamento, ideal para compliance.</td>
+                        <td>Tempo de recuperação pode levar até 12 horas.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="database">
+            <h1 class="title">Banco de Dados</h1>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Banco de Dados</th>
+                        <th>Descrição</th>
+                        <th>Caso de Uso Ideal</th>
+                        <th>Principais Características</th>
+                        <th>Limitações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Amazon RDS</td>
+                        <td>Serviço gerenciado para bancos de dados relacionais (MySQL, PostgreSQL, MariaDB, Oracle, SQL Server).</td>
+                        <td>Aplicações que requerem banco de dados relacional com escalabilidade e alta disponibilidade.</td>
+                        <td>Backup automático, escalabilidade, e suporte a multi-AZ.</td>
+                        <td>Limitações em personalizações em comparação com bancos de dados auto-gerenciados.</td>
+                    </tr>
+                    <tr>
+                        <td>Amazon DynamoDB</td>
+                        <td>Banco de dados NoSQL totalmente gerenciado que fornece latência de milissegundos.</td>
+                        <td>Aplicações com alta demanda por leitura e escrita, como jogos e IoT.</td>
+                        <td>Escalabilidade automática, alta disponibilidade e desempenho consistente.</td>
+                        <td>Modelo de preços baseado em capacidade provisionada ou sob demanda pode ser complexo.</td>
+                    </tr>
+                    <tr>
+                        <td>Amazon Aurora</td>
+                        <td>Banco de dados relacional compatível com MySQL e PostgreSQL, otimizado para a nuvem.</td>
+                        <td>Aplicações que requerem alta performance e disponibilidade, como sistemas críticos.</td>
+                        <td>5 vezes mais rápido que bancos de dados MySQL tradicionais, backup contínuo.</td>
+                        <td>Custo mais elevado em comparação com RDS para MySQL ou PostgreSQL simples.</td>
+                    </tr>
+                    <tr>
+                        <td>Amazon Redshift</td>
+                        <td>Data warehouse em nuvem que permite análises complexas de grandes conjuntos de dados.</td>
+                        <td>Business Intelligence, análises de grandes volumes de dados e relatórios.</td>
+                        <td>Desempenho otimizado para consultas analíticas, integração com ferramentas de BI.</td>
+                        <td>Limitações na latência para consultas em tempo real.</td>
+                    </tr>
+                    <tr>
+                        <td>Amazon DocumentDB</td>
+                        <td>Banco de dados de documentos compatível com MongoDB, totalmente gerenciado.</td>
+                        <td>Aplicações que utilizam dados não estruturados e requerem consultas complexas.</td>
+                        <td>Escalabilidade automática, alta disponibilidade e recuperação automática.</td>
+                        <td>Compatibilidade limitada com versões mais recentes do MongoDB.</td>
+                    </tr>
+                    <tr>
+                        <td>Amazon ElastiCache</td>
+                        <td>Serviço de caching em memória para melhorar o desempenho de aplicações.</td>
+                        <td>Aplicações que requerem acesso rápido a dados frequentemente acessados.</td>
+                        <td>Suporte para Redis e Memcached, alta performance e escalabilidade.</td>
+                        <td>Não é um banco de dados persistente; os dados podem ser perdidos em caso de falha.</td>
+                    </tr>
+                    <tr>
+                        <td>Amazon Neptune</td>
+                        <td>Banco de dados gráfico totalmente gerenciado que suporta modelos de grafos de propriedade.</td>
+                        <td>Aplicações que requerem relações complexas entre dados, como redes sociais ou recomendações.</td>
+                        <td>Desempenho otimizado para consultas de grafos, suporte a Gremlin e SPARQL.</td>
+                        <td>Modelo de dados específico; pode não ser adequado para todos os casos de uso.</td>
+                    </tr>
+                    <tr>
+                        <td>Amazon Keyspaces</td>
+                        <td>Banco de dados NoSQL gerenciado compatível com Apache Cassandra.</td>
+                        <td>Aplicações que utilizam Cassandra e precisam de um serviço gerenciado.</td>
+                        <td>Escalabilidade automática, compatibilidade com APIs do Cassandra.</td>
+                        <td>Latência pode ser maior em comparação com clusters de Cassandra autogerenciados.</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+        </section>
+
+        <section id="sqsxsns">
+            <h1 class="title">SQS x SNS</h1>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Aspecto</th>
+                        <th>Amazon SQS</th>
+                        <th>Amazon SNS</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Descrição</td>
+                        <td>Serviço de fila gerenciado que permite o envio, recebimento e armazenamento de mensagens entre componentes de uma aplicação.</td>
+                        <td>Serviço de notificação gerenciado que permite o envio de mensagens para múltiplos assinantes de forma assíncrona.</td>
+                    </tr>
+                    <tr>
+                        <td>Caso de Uso Ideal</td>
+                        <td>Comunicação entre serviços e aplicativos com desacoplamento, como processamento de tarefas em segundo plano.</td>
+                        <td>Envio de notificações em tempo real para múltiplos sistemas ou usuários, como alertas e atualizações de status.</td>
+                    </tr>
+                    <tr>
+                        <td>Modelo de Mensagens</td>
+                        <td>Baseado em filas, onde as mensagens são armazenadas até serem processadas.</td>
+                        <td>Baseado em publicações, onde mensagens são enviadas para todos os assinantes.</td>
+                    </tr>
+                    <tr>
+                        <td>Garantia de Entrega</td>
+                        <td>Entrega garantida (pode ser entregue mais de uma vez em casos de falha).</td>
+                        <td>Entrega ao menos uma vez (pode ser enviada mais de uma vez).</td>
+                    </tr>
+                    <tr>
+                        <td>Tempo de Retenção de Mensagens</td>
+                        <td>De 1 minuto a 14 dias.</td>
+                        <td>Mensagens são descartadas após a entrega aos assinantes.</td>
+                    </tr>
+                    <tr>
+                        <td>Tipos de Mensagens</td>
+                        <td>Mensagens de texto com tamanho de até 256 KB.</td>
+                        <td>Mensagens de texto com tamanho de até 256 KB (com suporte para mensagens de até 2 KB em alguns casos).</td>
+                    </tr>
+                    <tr>
+                        <td>Protocolos Suportados</td>
+                        <td>HTTP/HTTPS, Amazon SQS, SDKs AWS.</td>
+                        <td>HTTP/HTTPS, Email, SMS, Amazon SQS, Lambda, aplicativos móveis.</td>
+                    </tr>
+                    <tr>
+                        <td>Escalabilidade</td>
+                        <td>Altamente escalável, sem limites para o número de mensagens nas filas.</td>
+                        <td>Altamente escalável, pode entregar mensagens a milhões de assinantes.</td>
+                    </tr>
+                    <tr>
+                        <td>Principais Características</td>
+                        <td>Fácil integração com outros serviços AWS, controle de visibilidade de mensagens.</td>
+                        <td>Facilidade de configuração de tópicos e assinantes, suporte a diferentes protocolos.</td>
+                    </tr>
+                    <tr>
+                        <td>Limitações</td>
+                        <td>Não suporta entrega em tempo real; mensagens podem ser processadas fora de ordem.</td>
+                        <td>Não armazena mensagens; depende do SQS ou de outras integrações para persistência.</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+        </section>
+
+        <section id="vpc">
+            <h1 class="title">VPC</h1>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Componente</th>
+                        <th>Descrição</th>
+                        <th>Caso de Uso Ideal</th>
+                        <th>Principais Características</th>
+                        <th>Limitações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Sub-rede Pública</td>
+                        <td>Sub-rede que permite acesso direto à internet por meio de um Internet Gateway.</td>
+                        <td>Aplicações que precisam ser acessíveis ao público, como servidores web.</td>
+                        <td>Acesso à internet, configuração simplificada com IPs públicos.</td>
+                        <td>Potencial exposição a ameaças da internet.</td>
+                    </tr>
+                    <tr>
+                        <td>Sub-rede Privada</td>
+                        <td>Sub-rede que não tem acesso direto à internet, proporcionando maior segurança.</td>
+                        <td>Aplicações que não devem ser expostas à internet, como bancos de dados e servidores de aplicação.</td>
+                        <td>Isolamento de recursos críticos, acesso à internet via NAT Gateway.</td>
+                        <td>Necessita de NAT Gateway para acessar a internet.</td>
+                    </tr>
+                    <tr>
+                        <td>IP Privado</td>
+                        <td>Endereço IP que pode ser usado apenas dentro da VPC, não acessível diretamente pela internet.</td>
+                        <td>Comunicação interna entre instâncias e serviços na VPC.</td>
+                        <td>Segurança e privacidade, não exposto à internet pública.</td>
+                        <td>Não pode ser acessado diretamente pela internet.</td>
+                    </tr>
+                    <tr>
+                        <td>IP Público</td>
+                        <td>Endereço IP acessível pela internet, permitindo comunicação externa.</td>
+                        <td>Aplicações que requerem acesso público, como servidores web.</td>
+                        <td>Facilita a comunicação com a internet e outros serviços externos.</td>
+                        <td>Endereços IP públicos podem ser dinâmicos ou estáticos (Elastic IP).</td>
+                    </tr>
+                    <tr>
+                        <td>Tabelas de Rotas</td>
+                        <td>Conjunto de regras que determina como o tráfego é roteado dentro da VPC.</td>
+                        <td>Gerenciamento de caminhos de tráfego entre sub-redes e para a internet.</td>
+                        <td>Permite roteamento personalizado e suporte a rotas específicas.</td>
+                        <td>Uma sub-rede deve ser associada a uma tabela de rotas.</td>
+                    </tr>
+                    <tr>
+                        <td>Internet Gateway</td>
+                        <td>Dispositivo que permite a comunicação entre instâncias na VPC e a internet.</td>
+                        <td>Aplicações que precisam ser acessíveis pela internet, como servidores web.</td>
+                        <td>Comunicação bidirecional entre a VPC e a internet pública.</td>
+                        <td>Cada VPC pode ter apenas um Internet Gateway.</td>
+                    </tr>
+                    <tr>
+                        <td>Elastic Network Interface (ENI)</td>
+                        <td>Interface de rede virtual que pode ser anexada a instâncias EC2.</td>
+                        <td>Ambientes que necessitam de múltiplas interfaces de rede ou alta disponibilidade.</td>
+                        <td>Permite configuração de IPs privados, públicos e Elastic IPs.</td>
+                        <td>Limitações na quantidade de interfaces que podem ser anexadas a uma instância.</td>
+                    </tr>
+                    <tr>
+                        <td>IP Elástico</td>
+                        <td>Endereço IP público estático que pode ser associado a instâncias na VPC.</td>
+                        <td>Instâncias que precisam de um endereço IP fixo para comunicação externa.</td>
+                        <td>Facilidade de reatribuição rápida entre instâncias.</td>
+                        <td>Custo adicional se não estiver associado a uma instância.</td>
+                    </tr>
+                    <tr>
+                        <td>NAT Gateway</td>
+                        <td>Dispositivo que permite que instâncias em sub-redes privadas acessem a internet.</td>
+                        <td>Ambientes onde instâncias precisam acessar a internet para atualizações, mas não precisam ser acessíveis externamente.</td>
+                        <td>Gerenciamento simplificado, escalabilidade automática.</td>
+                        <td>Limitação de taxa de transferência e custo por hora e por GB transferido.</td>
+                    </tr>
+                    <tr>
+                        <td>VPC Peering</td>
+                        <td>Conexão entre duas VPCs que permite comunicação entre elas.</td>
+                        <td>Ambientes que requerem comunicação entre VPCs diferentes, como serviços interdependentes.</td>
+                        <td>Conexão privada, sem necessidade de um gateway ou VPN.</td>
+                        <td>Não é suportado o peering entre VPCs em diferentes regiões.</td>
+                    </tr>
+                    <tr>
+                        <td>Transit Gateway</td>
+                        <td>Serviço que conecta várias VPCs e redes locais por meio de uma única interface.</td>
+                        <td>Ambientes complexos que precisam interconectar várias VPCs e conexões de rede.</td>
+                        <td>Gerenciamento simplificado, suporte a conexões em escala.</td>
+                        <td>Custo adicional e limitações no número de conexões simultâneas.</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+
+    <footer>
+        <p>&copy; 2024 Resumo de estudos para o AWS Solution Architect.</p>
+    </footer>
+
+</body>
+
+</html>
