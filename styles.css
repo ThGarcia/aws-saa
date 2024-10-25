@@ -45,6 +45,7 @@ main {
 
 h1.title {
   cursor: pointer;
+  font-size: 18px;
 }
 
 table {
@@ -57,9 +58,17 @@ th, td {
   padding: 5px;
 }
 
+td {
+  text-align: justify;
+}
+
 th {
   background-color: rgba(119, 119, 119, 0.993);
   color: white;
+}
+
+th, td, a, p {
+  font-size: 14px;
 }
 
 .title {

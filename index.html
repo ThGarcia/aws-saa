@@ -22,12 +22,13 @@
             <li><a href="#database">Banco de Dados</a></li>
             <li><a href="#sqsxsns">SQS x SNS</a></li>
             <li><a href="#vpc">VPC</a></li>
+            <li><a href="#ecsxeks">ECS x EKS</a></li>
         </ul>
     </nav>
 
     <main>
         <section id="nlbxalb">
-            <h1 class="title">Network Load Balancer x Application Load Balancer</h1>
+            <h1 class="title">NLB x ALB</h1>
             <table>
                 <thead>
                     <tr>
@@ -454,6 +455,53 @@
                         <td>Ambientes complexos que precisam interconectar várias VPCs e conexões de rede.</td>
                         <td>Gerenciamento simplificado, suporte a conexões em escala.</td>
                         <td>Custo adicional e limitações no número de conexões simultâneas.</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            
+        </section>
+
+        <section id="ecsxeks">
+            <h1 class="title">ECS x EKS</h1>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Serviço</th>
+                        <th>Descrição</th>
+                        <th>Caso de Uso Ideal</th>
+                        <th>Principais Características</th>
+                        <th>Limitações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Amazon ECS (Elastic Container Service)</td>
+                        <td>Serviço de orquestração de contêineres altamente escalável e gerenciado.</td>
+                        <td>Aplicações que necessitam de um gerenciamento simples de contêineres.</td>
+                        <td>Suporte para tipos de lançamento (EC2 e Fargate), integração com load balancers e monitoramento.</td>
+                        <td>Menos flexibilidade comparado ao Kubernetes.</td>
+                    </tr>
+                    <tr>
+                        <td>Amazon EKS (Elastic Kubernetes Service)</td>
+                        <td>Serviço gerenciado para executar aplicações Kubernetes na AWS.</td>
+                        <td>Ambientes que utilizam Kubernetes para orquestrar contêineres.</td>
+                        <td>Integração com ferramentas de Kubernetes, suporte a clusters e escalabilidade.</td>
+                        <td>Requer conhecimento de Kubernetes e configuração mais complexa.</td>
+                    </tr>
+                    <tr>
+                        <td>AWS Fargate</td>
+                        <td>Serviço de computação sem servidor para contêineres, usado com ECS e EKS.</td>
+                        <td>Ambientes que precisam de uma solução que gerencie a infraestrutura subjacente.</td>
+                        <td>Execução de contêineres sem precisar gerenciar servidores, escalabilidade automática.</td>
+                        <td>Possíveis custos mais altos em cargas de trabalho de longa duração.</td>
+                    </tr>
+                    <tr>
+                        <td>Amazon ECR (Elastic Container Registry)</td>
+                        <td>Serviço de registro de contêineres que armazena, gerencia e implanta imagens de contêiner.</td>
+                        <td>Ambientes que necessitam de armazenamento seguro para imagens de contêiner.</td>
+                        <td>Integração nativa com ECS e EKS, suporte a autenticação e controle de acesso.</td>
+                        <td>Custos associados ao armazenamento e transferência de dados.</td>
                     </tr>
                 </tbody>
             </table>
